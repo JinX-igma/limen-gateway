@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+.secrets/
+data/
+logs/
+runtime/
+*.sqlite3
+.pytest_cache/

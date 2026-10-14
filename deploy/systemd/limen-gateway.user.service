@@ -1,0 +1,16 @@
+[Unit]
+Description=Limen Gateway (device-token LLM proxy, user service)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h/limen-gateway
+EnvironmentFile=%h/limen-gateway/.secrets/gateway.env
+ExecStart=/usr/bin/python3 -m edge_gateway.main
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=20
+
+[Install]
+WantedBy=default.target

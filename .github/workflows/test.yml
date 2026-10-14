@@ -1,0 +1,25 @@
+name: test
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Run tests (no network calls, no real credentials)
+        run: python3 -m unittest discover -s tests -v
+      - name: Secret-hygiene grep
+        run: |
+          if git grep -nE 'sk-[A-Za-z0-9_-]{16,}' -- . ':!tests'; then
+            echo "Possible committed API key found" >&2
+            exit 1
+          fi

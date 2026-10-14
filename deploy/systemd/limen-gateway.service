@@ -1,0 +1,24 @@
+[Unit]
+Description=Limen Gateway (device-token LLM proxy)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=limen
+Group=limen
+WorkingDirectory=/opt/limen-gateway
+EnvironmentFile=/opt/limen-gateway/.secrets/gateway.env
+ExecStart=/usr/bin/python3 -m edge_gateway.main
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=20
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=/opt/limen-gateway/data /opt/limen-gateway/logs /opt/limen-gateway/runtime
+
+[Install]
+WantedBy=multi-user.target
